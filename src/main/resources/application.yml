@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3360/library?createDatabaseIfNotExist=true
+    username: root
+    password: Pratyush@1909
+
+  jpa:
+    hibernate.ddl-auto: create
+    show-sql: true
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: warn

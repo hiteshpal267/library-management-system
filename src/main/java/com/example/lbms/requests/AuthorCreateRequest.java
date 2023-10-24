@@ -1,5 +1,6 @@
 package com.example.lbms.requests;
 
+import com.example.lbms.models.Author;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -21,4 +22,13 @@ public class AuthorCreateRequest {
 
     @NotNull
     private String email;
+
+    private Author toAuthor() {
+        return Author.builder()
+                .age(age)
+                .email(email)
+                .country(country)
+                .name(name)
+                .build();
+    }
 }

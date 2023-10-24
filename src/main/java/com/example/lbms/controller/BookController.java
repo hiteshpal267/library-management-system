@@ -20,8 +20,7 @@ public class BookController {
 
     @PostMapping("/saveBook")
     public ResponseEntity<?> saveBook(@Valid @RequestBody BookCreateRequest bookCreateRequest) {
-        bookServiceInterface.save(bookCreateRequest.toBook());
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(bookServiceInterface.save(bookCreateRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/books/search")

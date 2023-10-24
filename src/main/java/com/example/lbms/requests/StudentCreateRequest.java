@@ -19,19 +19,18 @@ public class StudentCreateRequest {
     @NotNull
     private String contact;
 
-    @NotNull
     private AccountStatus accountStatus;
 
     @NotBlank
     private String address;
 
-    private Student toStudent() {
+    public Student toStudent() {
         return Student.builder()
                 .name(name)
                 .address(address)
                 .email(email)
                 .contact(contact)
-                .accountStatus(accountStatus)
+                .accountStatus(AccountStatus.ACTIVE)
                 .build();
     }
 }

@@ -24,14 +24,19 @@ public class BookServiceImpl implements BookServiceInterface {
     @Override
     public Book create(BookCreateRequest bookCreateRequest) {
         Book book = bookCreateRequest.toBook();
-        Author author = book.getAuthor();
-        Author authorFromDb = authorServiceInterface.findByEmail(author);
+//        String email = book.getAuthor().getEmail();
+        Author authorFromDb = authorServiceInterface.findByEmail(book.getAuthor().getEmail());
         if(authorFromDb == null) {
             authorFromDb = authorServiceInterface.createAuthor(bookCreateRequest.getAuthor());
         }
         book.setAuthor(authorFromDb);
         authorServiceInterface.createAuthor(bookCreateRequest.getAuthor());
         return bookRepositoryInterface.save(book);
+    }
+
+    @Override
+    public Book save(BookCreateRequest bookCreateRequest) {
+        return create(bookCreateRequest);
     }
 
     @Override
@@ -48,10 +53,5 @@ public class BookServiceImpl implements BookServiceInterface {
             case COST -> bookRepositoryInterface.findByCost(Integer.parseInt(value));
             case ID -> bookRepositoryInterface.findAllById(new ArrayList<>(Integer.parseInt(value)));
         };
-    }
-
-    @Override
-    public Book save(Book book) {
-        return null;
     }
 }

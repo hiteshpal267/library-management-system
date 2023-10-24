@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface BookServiceInterface {
     Book create(BookCreateRequest bookCreateRequest);
-    Book save(Book book);
+    // Book save(Book book);
+     Book save(BookCreateRequest bookCreateRequest);
+
     Book findById(Integer id);
     List<Book> findBooks(BookFilterType bookFilterType, String value);
 }

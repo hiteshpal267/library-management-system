@@ -18,7 +18,7 @@ public class AuthorServiceImpl implements AuthorServiceInterface {
     }
 
     @Override
-    public Author findByEmail(Author author) {
-        return authorRepositoryInterface.findByEmail(author);
+    public Author findByEmail(String email) {
+        return authorRepositoryInterface.findByEmail(email);
     }
 }

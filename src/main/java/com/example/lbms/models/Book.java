@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -21,12 +22,16 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    //@Column(name = "name")
     private String name;
 
+    //@Column(name = "cost")
     private int cost;
 
+    //@Column(name = "isbn")
     private String isbn;
 
+    //@Column(name = "genre")
     @Enumerated(value = EnumType.STRING)
     private Genre genre;
 
@@ -37,6 +42,9 @@ public class Book {
     @ManyToOne
     @JoinColumn
     private Author author;
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+    private List<Transaction> transactionList;
 
     @CreationTimestamp
     private Date createdOn;

@@ -18,19 +18,19 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    //@Column(name = "name")
     private String name;
 
-    @Column(name = "country")
+    //@Column(name = "country")
     private String country;
 
-    @Column(name = "age")
+    //@Column(name = "age")
     private int age;
 
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(/*name = "email",*/ unique = true, nullable = false)
     private String email;
 
-    @OneToMany(mappedBy = "author") // One author can have multiple books; Bi-directional Mapping
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY) // One author can have multiple books; Bi-directional Mapping
     private List<Book> bookList;
 
     @CreationTimestamp

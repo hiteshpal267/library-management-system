@@ -1,6 +1,6 @@
 package com.example.lbms.enums;
 
-@SuppressWarnings("unused")
+// @SuppressWarnings("unused")
 public enum Genre {
 
     FICTIONAL,

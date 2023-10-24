@@ -1,20 +1,31 @@
 spring:
   datasource:
+    # We can use custom datasource properties as per our database need
     url: jdbc:mysql://localhost:3306/library?createDatabaseIfNotExist=true
     username: springstudent
     password: springstudent
 
   jpa:
     hibernate.ddl-auto: create
+
+    # At least I got to know what queries are being executed behind the scenes
     show-sql: true
 
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect:
+
+    open-in-view: false
+
+  # Turn off the Spring banner
+  # It is pretty annoying
+  main:
+    banner-mode: off
 
 server:
   port: 8080
 
+# Turning off the unnecessary logs helps better
 logging:
   level:
     root: warn

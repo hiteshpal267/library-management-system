@@ -6,7 +6,7 @@ spring:
     password: springstudent
 
   jpa:
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: update
 
     # At least I got to know what queries are being executed behind the scenes
     show-sql: true

@@ -5,6 +5,7 @@ import com.example.lbms.models.Author;
 import com.example.lbms.repository.BookRepositoryInterface;
 import com.example.lbms.models.Book;
 import com.example.lbms.requests.BookCreateRequest;
+import com.example.lbms.response.BookSearchResponse;
 import com.example.lbms.service.AuthorServiceInterface;
 import com.example.lbms.service.BookServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookServiceInterface {
@@ -24,7 +26,6 @@ public class BookServiceImpl implements BookServiceInterface {
     @Override
     public Book create(BookCreateRequest bookCreateRequest) {
         Book book = bookCreateRequest.toBook();
-//        String email = book.getAuthor().getEmail();
         Author authorFromDb = authorServiceInterface.findByEmail(book.getAuthor().getEmail());
         if(authorFromDb == null) {
             authorFromDb = authorServiceInterface.createAuthor(bookCreateRequest.getAuthor());
@@ -41,7 +42,14 @@ public class BookServiceImpl implements BookServiceInterface {
 
     @Override
     public Book findById(Integer id) {
-        return null;
+            return bookRepositoryInterface.findById(id.intValue());
+    }
+
+    @Override
+    public List<BookSearchResponse> findFilteredBooks(BookFilterType bookFilterType, String value) {
+        return findBooks(bookFilterType, value).stream()
+                .map(Book::toBookSearchResponse)
+                .collect(Collectors.toList());
     }
 
     @Override

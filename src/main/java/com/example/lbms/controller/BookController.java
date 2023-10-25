@@ -1,8 +1,9 @@
 package com.example.lbms.controller;
 
 import com.example.lbms.enums.BookFilterType;
-import com.example.lbms.models.Book;
+import com.example.lbms.enums.BookSearchOperationType;
 import com.example.lbms.requests.BookCreateRequest;
+import com.example.lbms.response.BookSearchResponse;
 import com.example.lbms.service.BookServiceInterface;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,12 @@ public class BookController {
     }
 
     @GetMapping("/books/search")
-    public List<Book> findBooks(@RequestParam("filter") BookFilterType bookFilterType,
-                                @RequestParam("value") String value) {
-        return bookServiceInterface.findBooks(bookFilterType, value);
+    public List<BookSearchResponse> findBooks(@RequestParam("filter") BookFilterType bookFilterType,
+                                              @RequestParam("value") String value,
+                                              @RequestParam("bookSearchOperationType") BookSearchOperationType bookSearchOperationType) {
+        return bookServiceInterface.findFilteredBooks(bookFilterType, value);
     }
+
+
 
 }

@@ -12,6 +12,7 @@ import com.example.lbms.service.TransactionServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class TransactionServiceImpl implements TransactionServiceInterface {
     @Autowired
@@ -68,9 +69,12 @@ public class TransactionServiceImpl implements TransactionServiceInterface {
         }
 
         Book book = bookServiceInterface.findById(bookId);
-        if(book == null || book.getStudent() == null || !book.getStudent().equals(student)) {
-            throw new TransactionServiceException("Book return is not valid for this student");
-        }
+        if(book == null)
+            throw new TransactionServiceException("Book not present in the library");
+        if(!book.getStudent().equals(student))
+            throw new TransactionServiceException("Book not issued to the given student");
+
+        Transaction issueTxn = transactionRepositoryInterface.findTopByBookAndStudentAndTransactionTypeOrderByIdDesc(bookId, studentId, TransactionType.ISSUE);
 
         Transaction transaction = Transaction.builder()
                 .externalId(UUID.randomUUID().toString())
@@ -87,5 +91,15 @@ public class TransactionServiceImpl implements TransactionServiceInterface {
         bookServiceInterface.save(book);
 
         return transaction.getExternalId();
+    }
+
+    private double calculateFine(Transaction issueTransaction) {
+        long issueTime = issueTransaction.getCreatedOn().getTime();
+        long returnTime = System.currentTimeMillis();
+        long diff = returnTime - issueTime;
+
+        long daysPassed = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+        return 0.0;
     }
 }

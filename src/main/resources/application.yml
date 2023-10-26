@@ -22,6 +22,10 @@ spring:
   main:
     banner-mode: off
 
+# Set the maximum days a book can be kept by a student
+book:
+  permissibleDays: 14
+
 server:
   port: 8080
 

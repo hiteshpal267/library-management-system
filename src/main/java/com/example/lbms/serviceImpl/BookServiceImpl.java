@@ -41,6 +41,11 @@ public class BookServiceImpl implements BookServiceInterface {
     }
 
     @Override
+    public Book save(Book book) {
+        return bookRepositoryInterface.save(book);
+    }
+
+    @Override
     public Book findById(Integer id) {
             return bookRepositoryInterface.findById(id.intValue());
     }

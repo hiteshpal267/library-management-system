@@ -2,8 +2,10 @@ package com.example.lbms.models;
 
 import com.example.lbms.enums.AccountStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,6 +15,8 @@ import java.util.List;
 @Data
 @Entity
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +25,7 @@ public class Student {
     //@Column(name = "name")
     private String name;
 
-    //@Column(name = "email", unique = true)
+    @Column(unique = true)
     private String email;
 
     @Column(/*name = "contact",*/ unique = true, nullable = false)

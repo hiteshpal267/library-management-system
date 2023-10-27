@@ -10,10 +10,13 @@ import com.example.lbms.service.BookServiceInterface;
 import com.example.lbms.service.StudentServiceInterface;
 import com.example.lbms.service.TransactionServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+@Service
 public class TransactionServiceImpl implements TransactionServiceInterface {
     @Autowired
     TransactionRepositoryInterface transactionRepositoryInterface;
@@ -23,6 +26,9 @@ public class TransactionServiceImpl implements TransactionServiceInterface {
 
     @Autowired
     BookServiceInterface bookServiceInterface;
+
+    @Value("${book.permissibleDays}")
+    int permissibleDays;
 
     @Override
     public String issueTransaction(int studentId, int bookId) throws TransactionServiceException {
@@ -74,12 +80,12 @@ public class TransactionServiceImpl implements TransactionServiceInterface {
         if(!book.getStudent().equals(student))
             throw new TransactionServiceException("Book not issued to the given student");
 
-        Transaction issueTxn = transactionRepositoryInterface.findTopByBookAndStudentAndTransactionTypeOrderByIdDesc(bookId, studentId, TransactionType.ISSUE);
+        Transaction issueTxn = transactionRepositoryInterface.findTopByBookAndStudentAndTransactionTypeOrderByIdDesc(book, student, TransactionType.ISSUE);
 
         Transaction transaction = Transaction.builder()
                 .externalId(UUID.randomUUID().toString())
                 .transactionType(TransactionType.RETURN)
-                .payment(0)
+                .payment(calculateFine(issueTxn))
                 .student(student)
                 .build();
 

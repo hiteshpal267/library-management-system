@@ -31,7 +31,7 @@ public class Author {
     //@Column(name = "age")
     private int age;
 
-    @Column(/*name = "email",*/ unique = true, nullable = false)
+    @Column(/*name = "email",*/  nullable = false)
     private String email;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY) // One author can have multiple books; Bi-directional Mapping

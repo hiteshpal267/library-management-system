@@ -41,8 +41,8 @@ public class BookServiceImpl implements BookServiceInterface {
     }
 
     @Override
-    public Book save(Book book) {
-        return bookRepositoryInterface.save(book);
+    public void save(Book book) {
+        bookRepositoryInterface.save(book);
     }
 
     @Override

@@ -14,5 +14,5 @@ public interface BookServiceInterface {
     Book findById(Integer id);
     List<Book> findBooks(BookFilterType bookFilterType, String value);
     List<BookSearchResponse> findFilteredBooks(BookFilterType bookFilterType, String value);
-    Book save(Book book);
+    void save(Book book);
 }

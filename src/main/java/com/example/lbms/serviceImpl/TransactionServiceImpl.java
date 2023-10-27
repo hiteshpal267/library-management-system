@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -80,23 +81,29 @@ public class TransactionServiceImpl implements TransactionServiceInterface {
         if(!book.getStudent().equals(student))
             throw new TransactionServiceException("Book not issued to the given student");
 
-        Transaction issueTxn = transactionRepositoryInterface.findTopByBookAndStudentAndTransactionTypeOrderByIdDesc(book, student, TransactionType.ISSUE);
+        Optional<Transaction> issueTxnO = transactionRepositoryInterface
+                .findTopByBookAndStudentAndTransactionTypeOrderByIdDesc(book, student, TransactionType.ISSUE);
 
-        Transaction transaction = Transaction.builder()
-                .externalId(UUID.randomUUID().toString())
-                .transactionType(TransactionType.RETURN)
-                .payment(calculateFine(issueTxn))
-                .student(student)
-                .build();
+        if(issueTxnO.isPresent()) {
+            Transaction issueTxn = issueTxnO.get();
 
-        transactionRepositoryInterface.save(transaction);
+            Transaction transaction = Transaction.builder()
+                    .externalId(UUID.randomUUID().toString())
+                    .transactionType(TransactionType.RETURN)
+                    .payment(calculateFine(issueTxn))
+                    .student(student)
+                    .build();
 
-        // Update the book details
-        // Make it available again
-        book.setStudent(null);
-        bookServiceInterface.save(book);
+            transactionRepositoryInterface.save(transaction);
 
-        return transaction.getExternalId();
+            // Update the book details
+            // Make it available again
+            book.setStudent(null);
+            bookServiceInterface.save(book);
+            return transaction.getExternalId();
+        } else {
+            throw new TransactionServiceException("No issue transaction found for the given book and student.");
+        }
     }
 
     private double calculateFine(Transaction issueTransaction) {
@@ -106,6 +113,12 @@ public class TransactionServiceImpl implements TransactionServiceInterface {
 
         long daysPassed = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 
-        return 0.0;
+        double fineRate = 1.0;
+        if(daysPassed <= permissibleDays) {
+            return 0.0;
+        } else {
+            long extraDays = daysPassed - permissibleDays;
+            return fineRate * extraDays;
+        }
     }
 }

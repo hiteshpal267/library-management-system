@@ -38,7 +38,7 @@ public class Book {
     private Genre genre;
 
     @ManyToOne
-    @JoinColumn
+    //@JoinColumn
     private Student student;
 
     // Due to bidirectional relation everytime in the book table author is fetched book list needs to be ignored there

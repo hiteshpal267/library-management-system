@@ -26,6 +26,12 @@ public class BookController {
 
     @GetMapping("/books/search")
     public List<BookSearchResponse> findBooks(@RequestParam("filter") BookFilterType bookFilterType,
+                                              @RequestParam("value") String value) {
+        return bookServiceInterface.findFilteredBooks(bookFilterType, value);
+    }
+
+    @GetMapping("/books/search/robust")
+    public List<BookSearchResponse> findBooks(@RequestParam("filter") BookFilterType bookFilterType,
                                               @RequestParam("value") String value,
                                               @RequestParam("bookSearchOperationType") BookSearchOperationType bookSearchOperationType) {
         return bookServiceInterface.findFilteredBooks(bookFilterType, value);

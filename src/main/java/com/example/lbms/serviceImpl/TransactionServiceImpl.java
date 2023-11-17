@@ -79,13 +79,6 @@ public class TransactionServiceImpl implements TransactionServiceInterface {
         if(book == null || book.getStudent() != null)
             throw new TransactionServiceException("Book not present in the library");
 
-       /*System.out.println("Student with ID passed as an argument:");
-        System.out.println(student);
-        System.out.println("Book with ID passed as an argument:");
-        System.out.println(book);
-        System.out.println("Student present in the book table:");
-        System.out.println(book.getStudent());*/
-
         if(book.getStudent() == null || book.getStudent().getId() != studentId)
             throw new TransactionServiceException("Book not issued to the given student");
 
